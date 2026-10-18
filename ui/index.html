@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Haven Lands Launcher</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="bar" id="bar">
+    <div class="bar-in">
+      <i class="mini" id="barIcon"><span id="barLetter"></span><img id="barImg" alt="" hidden></i>
+      <span class="bar-title" id="barTitle"></span>
+    </div>
+  </header>
+
+  <main class="scroll" id="scroll">
+
+    <!-- Шапка приложения -->
+    <aside class="side">
+    <section class="head">
+      <div class="app-icon" id="icon"><span id="letter"></span><img id="iconImg" alt="" hidden></div>
+      <div class="head-text">
+        <h1 id="tname"></h1>
+        <div class="dev" id="dev"></div>
+      </div>
+    </section>
+
+    <section class="stats" id="stats">
+      <div class="stat"><b id="fVer">—</b><span>Версия</span></div>
+      <div class="stat"><b id="fPl">—</b><span>Система</span></div>
+      <div class="stat"><b id="fSt">—</b><span>Статус</span></div>
+    </section>
+
+    <!-- Кнопки / прогресс -->
+    <section class="actions">
+      <div class="btnrow" id="btnrow">
+        <button class="btn ghost" id="btn2" hidden></button>
+        <button class="btn fill" id="btn" hidden></button>
+      </div>
+      <div class="prog" id="progress" hidden>
+        <div class="track"><i id="fill"></i></div>
+        <div class="prog-row">
+          <span class="prog-stage" id="stage"></span>
+          <span class="prog-pct" id="pct"></span>
+        </div>
+        <div class="prog-row sm">
+          <span id="step"></span>
+          <span id="time"></span>
+        </div>
+      </div>
+      <p class="note" id="msg"></p>
+    </section>
+
+    </aside>
+    <div class="content">
+    <!-- Обзор -->
+    <div class="pane" id="p-overview">
+
+      <section class="sec" id="evWrap" hidden>
+        <h2>Акции и события</h2>
+        <div class="hscroll" id="evList"></div>
+      </section>
+
+      <section class="sec" id="shotsWrap" hidden>
+        <h2>Скриншоты</h2>
+        <div class="hscroll shots" id="strip"></div>
+      </section>
+
+      <section class="sec" id="aboutWrap" hidden>
+        <h2>Об этом приложении</h2>
+        <p class="about clamp" id="about"></p>
+        <button class="textbtn" id="aboutMore" hidden>Показать полностью</button>
+      </section>
+
+      <section class="sec" id="wn" hidden>
+        <div class="sec-head"><h2>Что нового</h2><span id="wnVer"></span></div>
+        <div class="wntext clamp" id="notes"></div>
+        <button class="textbtn" id="more" hidden>Показать полностью</button>
+      </section>
+
+      <section class="sec" id="logWrap" hidden>
+        <button class="row-btn" id="lt"><span>Журнал установки</span><svg viewBox="0 0 24 24"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></button>
+        <pre class="log" id="log" hidden></pre>
+      </section>
+    </div>
+
+    <!-- Сообщество -->
+    <section class="pane" id="p-community" hidden>
+      <section class="sec first">
+        <h2>Ссылки</h2>
+        <div class="links" id="linksList"></div>
+      </section>
+      <section class="sec" id="faqWrap" hidden>
+        <h2>Вопросы и ответы</h2>
+        <div class="faq" id="faqList"></div>
+      </section>
+    </section>
+
+    </div>
+  </main>
+
+  <nav class="nav" id="tabs" hidden>
+    <button data-t="overview" class="on">
+      <span class="pill"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span>
+      <small>Обзор</small>
+    </button>
+    <button data-t="community" id="tCommunity">
+      <span class="pill"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></span>
+      <small>Сообщество</small>
+    </button>
+  </nav>
+</div>
+
+<!-- Карточка события -->
+<div class="sheet" id="sheet" hidden>
+  <div class="scrim" id="sheetBg"></div>
+  <article class="card" id="sheetCard" role="dialog" aria-modal="true">
+    <div class="grab"></div>
+    <button class="close" id="sheetX" aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+    <div class="card-scroll">
+      <div class="cimg" id="sImgBox"><img id="sImg" alt=""></div>
+      <div class="cbody">
+        <div class="cmeta"><span class="badge" id="sBadge"></span><span class="rel" id="sTime"></span></div>
+        <h3 id="sTitle"></h3>
+        <div class="when" id="sWhen"></div>
+        <div class="ctext" id="sText"></div>
+        <button class="btn fill wide" id="sBtn" hidden></button>
+      </div>
+    </div>
+  </article>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

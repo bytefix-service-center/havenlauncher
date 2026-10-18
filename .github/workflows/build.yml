@@ -1,0 +1,73 @@
+# Сборка установщиков для Windows и macOS на серверах GitHub (бесплатно для публичных репозиториев,
+# для приватных — в пределах бесплатных минут). Запуск: вкладка Actions → "Build installers" → Run workflow,
+# либо пуш тега вида v1.0.0 (тогда файлы ещё и прикрепятся к релизу).
+name: Build installers
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Версия (например 1.0.0)"
+        default: "1.0.0"
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Версия
+        shell: bash
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then V="${GITHUB_REF_NAME#v}"; else V="${{ inputs.version }}"; fi
+          echo "VERSION=${V:-1.0.0}" >> "$GITHUB_ENV"
+      - name: Inno Setup
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
+      - name: Сборка .exe и установщика
+        shell: cmd
+        env:
+          PYTHON: python
+        run: build_win.bat
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: dist/Haven-Lands-Launcher-Setup-*.exe
+      - name: Прикрепить к релизу
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/Haven-Lands-Launcher-Setup-*.exe
+
+  macos:
+    strategy:
+      matrix:
+        runner: [macos-15, macos-15-intel]   # Apple Silicon (arm64) и Intel (x86_64)
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Версия
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then V="${GITHUB_REF_NAME#v}"; else V="${{ inputs.version }}"; fi
+          echo "VERSION=${V:-1.0.0}" >> "$GITHUB_ENV"
+      - name: Сборка .app и DMG
+        run: bash ./build_mac.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg-${{ matrix.runner }}
+          path: dist/*.dmg
+      - name: Прикрепить к релизу
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.dmg
